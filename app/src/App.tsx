@@ -5,14 +5,20 @@ import RestaurantBody from './components/RestaurantBody';
 
 import { food } from './menu.json'
 import { restaurantReducer } from './reducers';
-import { RestaurantState } from './types';
+import { RestaurantState, BagItem } from './types';
 
-
+const bagItems = JSON.parse(localStorage.getItem('bag') || '[]');
+let items: BagItem[];
+if (bagItems !== null) {
+  items = bagItems;
+} else {
+  items = [];
+}
 const initialState: RestaurantState = {
   filter: '',
   style: 'all',
   bag: {
-    items: []
+    items: items
   },
   foods: food
 }
@@ -23,7 +29,7 @@ const App: React.FC = () => {
 
   const [state, dispatch] = useReducer(restaurantReducer, initialState);
 
-  
+
   return (
     <>
       <RestaurantHeader dispatch={dispatch} />

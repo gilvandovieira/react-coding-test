@@ -1,6 +1,7 @@
 import React from 'react';
 import { BagItem, RestauranteActionTypes } from '../types';
 import _ from 'lodash';
+import { removeFood, proceedToCheckout } from '../actions';
 
 interface Props {
     bag: BagItem[]
@@ -8,10 +9,7 @@ interface Props {
 }
 const Bag: React.FC<Props> = ({ bag, dispatch }) => {
     function onRemoveAFoodItem(item: BagItem) {
-        dispatch({
-            type: 'REMOVE_FOOD',
-            payload: item
-        })
+        dispatch(removeFood(item))
     }
     bag = _.sortBy(bag, [function (o) { return o.id; }]);
     return (<div className="d-flex-inline border clearfix bg-light" style={BagStyle}>
@@ -30,7 +28,10 @@ const Bag: React.FC<Props> = ({ bag, dispatch }) => {
             <h3>Total: ${_.reduce(bag, (left, right) => left + right.total, 0).toFixed(2)}</h3>
         </div>
         <div style={ProceedToCheckout}>
-            <button className="btn btn-secondary" style={ProceedToCheckout}>Proceed to checkout</button>
+            <button className="btn btn-secondary" style={ProceedToCheckout} onClick={(ev) => {
+                ev.preventDefault();
+                dispatch(proceedToCheckout())
+            }}>Proceed to checkout</button>
         </div>
     </div>)
 }

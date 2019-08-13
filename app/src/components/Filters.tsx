@@ -1,5 +1,6 @@
 import React from 'react';
 import { RestauranteActionTypes } from '../types';
+import { filterFood, changeCusineStyleToAll, changeCusineStyleToBeverages, changeCusineStyleToBurgers, changeCusineStyleToChinese, changeCusineStyleToPizza, changeCusineStyleToSalad } from '../actions';
 
 interface Props {
     dispatch: React.Dispatch<RestauranteActionTypes>
@@ -9,59 +10,38 @@ const Filter: React.FC<Props> = ({ dispatch }) => {
 
     function onInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
         e.preventDefault();
-        dispatch({
-            type: 'FILTER_FOOD',
-            payload: e.target.value || ''
-        })
+        dispatch(filterFood(e.target.value));
     }
 
     function onAllClick(e: React.MouseEvent) {
         e.preventDefault();
-        dispatch({
-            type: 'CHANGE_CUSINE_STYLE',
-            payload: 'all'
-        })
+        dispatch(changeCusineStyleToAll());
     }
 
     function onBeveragesClick(e: React.MouseEvent) {
         e.preventDefault();
-        dispatch({
-            type: 'CHANGE_CUSINE_STYLE',
-            payload: 'beverage'
-        })
+        dispatch(changeCusineStyleToBeverages());
     }
 
 
     function onBurgersClick(e: React.MouseEvent) {
         e.preventDefault();
-        dispatch({
-            type: 'CHANGE_CUSINE_STYLE',
-            payload: 'burgers'
-        })
+        dispatch(changeCusineStyleToBurgers());
     }
 
     function onChineseClick(e: React.MouseEvent) {
         e.preventDefault();
-        dispatch({
-            type: 'CHANGE_CUSINE_STYLE',
-            payload: 'chinese'
-        })
+        dispatch(changeCusineStyleToChinese());
     }
 
     function onPizzaClick(e: React.MouseEvent) {
         e.preventDefault();
-        dispatch({
-            type: 'CHANGE_CUSINE_STYLE',
-            payload: 'pizza'
-        })
+        dispatch(changeCusineStyleToPizza());
     }
 
     function onSaladClick(e: React.MouseEvent) {
         e.preventDefault();
-        dispatch({
-            type: 'CHANGE_CUSINE_STYLE',
-            payload: 'salad'
-        })
+        dispatch(changeCusineStyleToSalad());
     }
     return (
         <div style={FiltersStyle}>

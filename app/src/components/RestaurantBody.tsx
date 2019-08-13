@@ -15,10 +15,10 @@ const RestaurantBody: React.FC<Props> = ({ foods, bag, dispatch }) => {
         <div className="container clearfix" style={BodyStyle}>
             <div className="row">
                 <div className="col-md-6">
-                    <FoodList foods={foods} dispatch={dispatch}/>
+                    <FoodList foods={foods} dispatch={dispatch} />
                 </div>
                 <div className="col-md-6">
-                    <Bag bag={bag} dispatch={dispatch}></Bag>
+                    <Bag bag={bag} dispatch={dispatch} />
                 </div>
             </div>
         </div>

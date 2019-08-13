@@ -8,6 +8,8 @@ export const FILTER_FOOD = 'FILTER_FOOD';
 
 export const REMOVE_FOOD = 'REMOVE_FOOD';
 
+export const PROCEED_TO_CHECKOUT = 'PROCEED_TO_CHECKOUT';
+
 export interface Food {
     id: string
     title: string
@@ -49,8 +51,12 @@ interface FilterFoodAction extends Action<string>{
     payload: string
 }
 
-interface RemoveFoodAction extends Action {
+interface RemoveFoodAction extends Action<string> {
     type: typeof REMOVE_FOOD
     payload: BagItem
 }
-export type RestauranteActionTypes = AddFoodAction | ChangeCusineStyleAction | FilterFoodAction | RemoveFoodAction
+
+interface ProceedToCheckOutAction extends Action<string>{
+    type: typeof PROCEED_TO_CHECKOUT
+}
+export type RestauranteActionTypes = AddFoodAction | ChangeCusineStyleAction | FilterFoodAction | RemoveFoodAction | ProceedToCheckOutAction
