@@ -11,8 +11,8 @@ const FoodList: React.FC<Props> = ({ foods, dispatch }) => {
 
     return (<>
         {foods.map(food =>
-            <div className="border" style={FoodCard}>
-                <FoodElement food={food} dispatch={dispatch} key={food.id} />
+            <div className="border" style={FoodCard} key={food.id}>
+                <FoodElement food={food} dispatch={dispatch}  />
             </div>)}
     </>)
 }
