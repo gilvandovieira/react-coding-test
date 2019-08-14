@@ -38,7 +38,7 @@ const Bag: React.FC<Props> = ({ bag, dispatch }) => {
 
 
 const BagStyle = {
-    margin: '30px',
+    marginTop: '30px',
     padding: '15px',
     width: 'inherit',
     minWidth: 'fit-content'

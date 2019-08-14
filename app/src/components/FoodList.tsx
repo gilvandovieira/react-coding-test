@@ -18,7 +18,7 @@ const FoodList: React.FC<Props> = ({ foods, dispatch }) => {
 }
 
 const FoodCard = {
-    margin: '30px',
+    marginTop: '30px',
     padding: '15px',
     width: 'inherit'
 }

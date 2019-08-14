@@ -15,7 +15,7 @@ const FoodElement: React.FC<Props> = ({ food, dispatch }) => {
                 <small className="bg-light text-muted">US$ {food.price.toFixed(2)}</small></p>
             <div className="badge text-wrap badge-danger">{food.cuisine}</div>
             <div>
-                <button className="btn btn-success" style={AddFoodButton} onClick={(ev) => {
+                <button className="btn btn-success" onClick={(ev) => {
                     ev.preventDefault();
                     dispatch(addFood(food));
                 }}>+</button>
@@ -26,11 +26,8 @@ const FoodElement: React.FC<Props> = ({ food, dispatch }) => {
 
 
 const FoodElementStyle = {
-    minWidth: '350px'
+   width:'inherit'
 }
 
-const AddFoodButton = {
-    display: 'inline-block'
-}
 
 export default FoodElement
