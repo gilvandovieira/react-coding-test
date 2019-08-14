@@ -10,7 +10,11 @@ const router = express.Router();
 const order = [];
 
 router.get('/', (req, res) => {
-  res.status(200).json(food);
+  const result = _.filter(food, (o) => _.startsWith(o.title, req.query.name));
+  if (result.length === 0) {
+    return res.status(200).json(food);
+  }
+  return res.status(200).json(result);
 });
 
 router.get('/cuisine/:c', (req, res) => {
