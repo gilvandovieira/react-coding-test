@@ -8,4 +8,4 @@ Using the mockup as reference, develop a food delivery website using:
 
 ![Objective](https://github.com/gilvandovieira/react-coding-test/raw/master/docs/objective.png)
 
-[Link to the completed objective](http://restaurant-at-the-end-of-the-universe.surge.sh/)
+[http://restaurant-at-the-end-of-the-universe.surge.sh](http://restaurant-at-the-end-of-the-universe.surge.sh/)
