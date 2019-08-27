@@ -1,83 +1,82 @@
 import React from 'react';
-import { RestauranteActionTypes } from '../types';
-import { filterFood, changeCusineStyleToAll, changeCusineStyleToBeverages, changeCusineStyleToBurgers, changeCusineStyleToChinese, changeCusineStyleToPizza, changeCusineStyleToSalad } from '../actions';
+import { RestaurantState } from '../types';
+import { filterFood, changeCuisineStyle } from '../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee, faDragon, faHamburger, faPizzaSlice, faCarrot, faBars } from '@fortawesome/free-solid-svg-icons';
+import { connect } from 'react-redux';
 
 interface Props {
-    dispatch: React.Dispatch<RestauranteActionTypes>
+    style: string
+    filter: string
+    filterFood: (s: string) => void
+    changeCuisineStyle: (s: string) => void
 }
 
-const Filter: React.FC<Props> = ({ dispatch }) => {
+const Filters: React.FC<Props> = ({ style, filter, filterFood, changeCuisineStyle }) => {
 
-    function onInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    // const dispatch = useDispatch<React.Dispatch<RestauranteActionTypes>>();
+
+    function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
-        dispatch(filterFood(e.target.value));
+        filterFood(e.target.value);
     }
 
-    function onAllClick(e: React.MouseEvent) {
+    function onChangeCuisine(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
-        dispatch(changeCusineStyleToAll());
-    }
-
-    function onBeveragesClick(e: React.MouseEvent) {
-        e.preventDefault();
-        dispatch(changeCusineStyleToBeverages());
-    }
-
-
-    function onBurgersClick(e: React.MouseEvent) {
-        e.preventDefault();
-        dispatch(changeCusineStyleToBurgers());
-    }
-
-    function onChineseClick(e: React.MouseEvent) {
-        e.preventDefault();
-        dispatch(changeCusineStyleToChinese());
-    }
-
-    function onPizzaClick(e: React.MouseEvent) {
-        e.preventDefault();
-        dispatch(changeCusineStyleToPizza());
-    }
-
-    function onSaladClick(e: React.MouseEvent) {
-        e.preventDefault();
-        dispatch(changeCusineStyleToSalad());
+        const { value } = e.target;
+        changeCuisineStyle(value);
     }
     return (
         <div style={FilterStyle}>
             <div className="d-flex justify-content-center">
-                <input className="input" type="text" onChange={onInputChange} style={InputStyle}></input>
+                <input className="input" type="text" placeholder="Search" onChange={onInputChange} style={InputStyle} value={filter}></input>
             </div>
             <div className="d-flex justify-content-center m-6">
-                <div className="btn-group">
-                    <button className="btn btn-primary" onClick={onAllClick}>
+
+                <div className="form-check form-check-inline">
+                    <input type="radio" className="form-check-input" name="cuisine" value="all" id="cuisine-all" onChange={onChangeCuisine} checked={style === 'all'} />
+                    <label htmlFor="cuisine-all">
                         <span className="d-sm-inline d-none">All</span>
                         <span className="d-sm-none d-block"><FontAwesomeIcon icon={faBars} /></span>
-                    </button>
-                    <button className="btn btn-primary" onClick={onBeveragesClick}>
+                    </label>
+                </div>
+                <div className="form-check form-check-inline">
+                    <input type="radio" className="form-check-input" name="cuisine" value="beverage" id="cuisine-beverages" onChange={onChangeCuisine} checked={style === 'beverage'} />
+                    <label htmlFor="cuisine-beverages">
                         <span className="d-sm-inline d-none">Beverages</span>
                         <span className="d-sm-none d-block"><FontAwesomeIcon icon={faCoffee} /></span>
-                    </button>
-                    <button className="btn btn-primary" onClick={onBurgersClick}>
+                    </label>
+                </div>
+                <div className="form-check form-check-inline">
+                    <input type="radio" className="form-check-input" name="cuisine" value="burgers" id="cuisine-burgers" onChange={onChangeCuisine} checked={style === 'burgers'} />
+                    <label htmlFor="cuisine-burgers">
                         <span className="d-sm-inline d-none">Burgers</span>
                         <span className="d-sm-none d-block"><FontAwesomeIcon icon={faHamburger} /></span>
-                    </button>
-                    <button className="btn btn-primary" onClick={onChineseClick}>
+                    </label>
+                </div>
+                <div className="form-check form-check-inline">
+                    <input type="radio" className="form-check-input" name="cuisine" value="chinese" id="cuisine-chinese" onChange={onChangeCuisine} checked={style === 'chinese'} />
+                    <label htmlFor="cuisine-chinese">
                         <span className="d-sm-inline d-none">Chinese</span>
                         <span className="d-sm-none d-block"><FontAwesomeIcon icon={faDragon} /></span>
-                    </button>
-                    <button className="btn btn-primary" onClick={onPizzaClick}>
+                    </label>
+                </div>
+                <div className="form-check form-check-inline">
+                    <input type="radio" className="form-check-input" name="cuisine" value="pizza" id="cuisine-pizza" onChange={onChangeCuisine} checked={style === 'pizza'} />
+                    <label htmlFor="cuisine-pizza">
                         <span className="d-sm-inline d-none">Pizza</span>
                         <span className="d-sm-none d-block"><FontAwesomeIcon icon={faPizzaSlice} /></span>
-                    </button>
-                    <button className="btn btn-primary" onClick={onSaladClick}>
+                    </label>
+                </div>
+                <div className="form-check form-check-inline">
+                    <input type="radio" className="form-check-input" name="cuisine" value="salad" id="cuisine-salad" onChange={onChangeCuisine} checked={style === 'salad'} />
+                    <label htmlFor="cuisine-salad">
                         <span className="d-sm-inline d-none">Salad</span>
                         <span className="d-sm-none d-block"><FontAwesomeIcon icon={faCarrot} /></span>
-                    </button>
+                    </label>
                 </div>
             </div>
+
         </div>
     )
 }
@@ -89,4 +88,16 @@ const InputStyle = {
     marginTop: '30px',
     marginBottom: '15px',
 }
-export default Filter
+
+const mapStateToProps = (state: RestaurantState) => ({
+    style: state.style,
+    filter: state.filter
+});
+
+const dispatchToProps = {
+    filterFood: filterFood,
+    changeCuisineStyle: changeCuisineStyle
+}
+
+
+export default connect(mapStateToProps, dispatchToProps)(Filters)

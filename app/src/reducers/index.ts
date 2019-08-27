@@ -1,18 +1,20 @@
 
-import { ADD_FOOD, FILTER_FOOD, RestauranteActionTypes, RestaurantState, CHANGE_CUSINE_STYLE, REMOVE_FOOD, BagItem, PROCEED_TO_CHECKOUT } from "../types";
+import { ADD_FOOD, FILTER_FOOD, RestauranteActionTypes, RestaurantState, CHANGE_CUSINE_STYLE, REMOVE_FOOD, BagItem, PROCEED_TO_CHECKOUT, Food } from "../types";
 import startsWith from 'lodash/startsWith';
 
-export const restaurantReducer = (state: RestaurantState, action: RestauranteActionTypes): RestaurantState => {
+const emptyState = JSON.parse(localStorage.getItem('state') || '{}')
+
+export const restaurantReducer = (s: RestaurantState = emptyState, action: RestauranteActionTypes) => {
     let Item: BagItem[];
     let Rest: BagItem[];
     let Total: BagItem[];
     switch (action.type) {
 
         case ADD_FOOD:
-            Item = state.bag.items.filter(bagItem => bagItem.id === action.payload.id);
-            Rest = state.bag.items.filter(bagItem => !(bagItem.id === action.payload.id));
+            Item = s.items.filter(bagItem => bagItem.id === action.payload.id);
+            Rest = s.items.filter(bagItem => !(bagItem.id === action.payload.id));
             if (Item[0] === undefined || Item[0] === null) {
-                state.bag.items = [...Rest, {
+                s.items = [...Rest, {
                     id: action.payload.id,
                     title: action.payload.title,
                     cusine: action.payload.cuisine,
@@ -21,21 +23,19 @@ export const restaurantReducer = (state: RestaurantState, action: RestauranteAct
                     total: 0
                 }]
             }
-            Item = state.bag.items.filter(bagItem => bagItem.id === action.payload.id);
+            Item = s.items.filter(bagItem => bagItem.id === action.payload.id);
             Item[0].count++;
             Item[0].total = Item[0].count * Item[0].priceUnit;
             Total = [...Rest, Item[0]];
             syncWithLocalStorage(Total);
             return {
-                ...state,
-                bag: {
-                    items: Total
-                }
+                ...s,
+                items: Object.assign(Total)
             }
 
         case REMOVE_FOOD:
-            Item = state.bag.items.filter(bagItem => bagItem.id === action.payload.id);
-            Rest = state.bag.items.filter(bagItem => !(bagItem.id === action.payload.id));
+            Item = s.items.filter(bagItem => bagItem.id === action.payload.id);
+            Rest = s.items.filter(bagItem => !(bagItem.id === action.payload.id));
             if (Item[0] !== undefined) {
                 if (Item[0].count === 0 || Item[0].count === 1) {
                     Total = [...Rest];
@@ -48,45 +48,33 @@ export const restaurantReducer = (state: RestaurantState, action: RestauranteAct
 
                 syncWithLocalStorage(Total);
                 return {
-                    ...state,
-                    bag: {
-                        items: Total
-                    }
+                    ...s,
+                    items: Object.assign(Total)
                 }
-            } else return { ...state }
+            } else return { ...s }
 
         case FILTER_FOOD:
-            state.foods = returnDefaultState(state).foods;
-
             return {
-                ...state,
-                foods: state.foods.filter(food => startsWith(food.title, action.payload))
+                ...s,
+                filter: action.payload,
+                foods: JSON.parse(localStorage.getItem('foods') || '[]').filter((food: Food) => startsWith(food.title, action.payload))
             }
 
         case CHANGE_CUSINE_STYLE:
-            state.foods = returnDefaultState(state).foods;
-
             return {
-                ...state,
-                foods: state.foods.filter(food => food.cuisine === action.payload || action.payload === 'all')
+                ...s,
+                style: action.payload,
+                foods: JSON.parse(localStorage.getItem('foods') || '[]').filter((food: Food) => (action.payload === 'all' || food.cuisine === action.payload))
             }
         case PROCEED_TO_CHECKOUT:
-            if (state.bag.items.length > 0) {
-                state.bag.items = [];
+            if (s.items.length > 0) {
+                s.items = [];
                 syncWithLocalStorage([]);
             }
-            return { ...state }
+            return { ...s }
         default:
-            return state;
+            return s;
     }
-}
-
-function returnDefaultState(state: RestaurantState): RestaurantState {
-    if (state.filter === '')
-        state.foods = JSON.parse(localStorage.getItem('foods') || '');
-    if (state.style === 'all')
-        state.foods = JSON.parse(localStorage.getItem('foods') || '');
-    return state;
 }
 
 function syncWithLocalStorage(items: BagItem[]) {

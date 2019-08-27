@@ -1,43 +1,72 @@
 import React, { useReducer } from 'react';
 
-import RestaurantHeader from './components/RestaurantHeader';
-import RestaurantBody from './components/RestaurantBody';
-
 import { food } from './menu.json'
 import { restaurantReducer } from './reducers';
-import { RestaurantState, BagItem } from './types';
+import { RestaurantState } from './types';
+import Filter from './components/Filters';
+import { Provider } from 'react-redux';
+import { createStore, compose } from 'redux';
+import FoodList from './components/FoodList';
+import Bag from './components/Bag';
 
-const bagItems = JSON.parse(localStorage.getItem('bag') || '[]');
-let items: BagItem[];
-if (bagItems !== null) {
-  items = bagItems;
-} else {
-  items = [];
-}
+// LocalStorage ...
+localStorage.setItem('foods', JSON.stringify(food));
+
+const items = JSON.parse(localStorage.getItem('bag') || '[]');
+const style = localStorage.getItem('style') || 'all';
+const filter = localStorage.getItem('filter') || '';
+
 const initialState: RestaurantState = {
-  filter: '',
-  style: 'all',
-  bag: {
-    items: items
-  },
+  filter: filter,
+  style: style,
+  items: items,
   foods: food
 }
 
-localStorage.setItem('foods', JSON.stringify(food));
+localStorage.setItem('state', JSON.stringify(initialState));
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+
+
+const store = createStore(restaurantReducer, initialState,composeEnhancers());
 
 const App: React.FC = () => {
 
-  const [state, dispatch] = useReducer(restaurantReducer, initialState);
+  const [] = useReducer(restaurantReducer, initialState);
 
 
   return (
     <>
-      <RestaurantHeader dispatch={dispatch} />
-      <RestaurantBody foods={state.foods} bag={state.bag.items} dispatch={dispatch} />
+      <Provider store={store}>
+        <header className="navbar navbar-expand" style={HeaderStyle}>
+          <Filter></Filter>
+        </header>
+        <div className="container clearfix">
+          <div className="row">
+            <div className="col-md-6">
+              <FoodList />
+            </div>
+            <div className="col-md-6">
+              <Bag />
+            </div>
+          </div>
+        </div>
+      </Provider>
     </>
   );
 }
 
+const HeaderStyle = {
+  backgroundColor: '#ea1d2c',
+
+};
 
 
 

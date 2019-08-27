@@ -25,38 +25,34 @@ export interface BagItem {
     total: number
 }
 
-export interface BagCollection{
-    items: BagItem[]
-}
-
 export interface RestaurantState {
     filter: string
     style: string
     foods: Food[]
-    bag: BagCollection
+    items: BagItem[]
 }
 
-interface AddFoodAction extends Action<string>{
+interface AddFoodAction extends Action{
     type: typeof ADD_FOOD
     payload: Food
 }
 
-interface ChangeCusineStyleAction extends Action<string>{
+interface ChangeCusineStyleAction extends Action{
     type: typeof CHANGE_CUSINE_STYLE
     payload: string
 }
 
-interface FilterFoodAction extends Action<string>{
+interface FilterFoodAction extends Action{
     type: typeof FILTER_FOOD
     payload: string
 }
 
-interface RemoveFoodAction extends Action<string> {
+interface RemoveFoodAction extends Action{
     type: typeof REMOVE_FOOD
     payload: BagItem
 }
 
-interface ProceedToCheckOutAction extends Action<string>{
+interface ProceedToCheckOutAction extends Action{
     type: typeof PROCEED_TO_CHECKOUT
 }
 export type RestauranteActionTypes = AddFoodAction | ChangeCusineStyleAction | FilterFoodAction | RemoveFoodAction | ProceedToCheckOutAction
