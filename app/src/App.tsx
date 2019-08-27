@@ -33,14 +33,9 @@ declare global {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-
-
-const store = createStore(restaurantReducer, initialState,composeEnhancers());
+const store = createStore(restaurantReducer, initialState, composeEnhancers());
 
 const App: React.FC = () => {
-
-  const [] = useReducer(restaurantReducer, initialState);
-
 
   return (
     <>
